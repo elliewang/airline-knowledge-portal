@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a1426">
+    <title>Skyline Intelligence | Knowledge Hub</title>
+    <style>
+        :root {
+            --bg: #071020;
+            --panel: #101d32;
+            --panel2: #15253d;
+            --line: #293b53;
+            --text: #e8f0ff;
+            --muted: #94a9c5;
+            --blue: #58a6ff;
+            --cyan: #65e1dc;
+            --gold: #f3c679;
+            --shadow: 0 12px 35px #0003
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at top left, #142c4b 0, #071020 48%);
+            color: var(--text);
+            font: 14px/1.55 Inter, ui-sans-serif, system-ui, Segoe UI, Arial
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--cyan);
+            outline-offset: 2px
+        }
+
+        .app {
+            max-width: 1580px;
+            min-height: 100vh;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 245px 1fr
+        }
+
+        .sidebar {
+            border-right: 1px solid var(--line);
+            background: #0a1729cf;
+            padding: 26px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -.6px;
+            padding: 0 8px
+        }
+
+        .mark {
+            height: 38px;
+            width: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #2682ff, #59d5db);
+            color: #071020;
+            font-size: 20px
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            color: #758eaf;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 750;
+            padding: 0 12px;
+            margin-bottom: 10px
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .nav button {
+            border: 0;
+            color: #b4c7de;
+            background: transparent;
+            text-align: left;
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .nav button.active,
+        .nav button:hover {
+            background: #1b3656;
+            color: #fff
+        }
+
+        .nav button span:first-child {
+            font-size: 17px
+        }
+
+        .sidebar-foot {
+            margin-top: auto;
+            border: 1px solid var(--line);
+            background: #101f34;
+            border-radius: 12px;
+            padding: 13px;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #65dbad;
+            margin-right: 6px
+        }
+
+        .main {
+            padding: 27px 28px;
+            min-width: 0
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 25px
+        }
+
+        .breadcrumbs {
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .pill {
+            border: 1px solid #33536b;
+            background: #172c40;
+            color: #b8e4df;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px
+        }
+
+        .avatar {
+            display: grid;
+            place-items: center;
+            height: 34px;
+            width: 34px;
+            border-radius: 50%;
+            background: #254a70;
+            font-weight: 750
+        }
+
+        .hero {
+            position: relative;
+            background: linear-gradient(110deg, #203e64, #0f3555 65%, #0e4c69);
+            border: 1px solid #366181;
+            border-radius: 18px;
+            padding: 28px 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow)
+        }
+
+        .hero:after {
+            content: '✈';
+            position: absolute;
+            right: 60px;
+            top: -50px;
+            font-size: 190px;
+            color: #ffffff0b;
+            transform: rotate(-15deg);
+            pointer-events: none
+        }
+
+        .hero h1 {
+            font-size: 29px;
+            line-height: 1.2;
+            margin: 7px 0 10px;
+            letter-spacing: -.8px
+        }
+
+        .hero p {
+            color: #c7d9eb;
+            max-width: 710px;
+            margin: 0 0 18px
+        }
+
+        .hero .tag {
+            font-size: 11px;
+            letter-spacing: 1.6px;
+            color: #8edbf7;
+            font-weight: 750;
+            text-transform: uppercase
+        }
+
+        .searchbox {
+            display: flex;
+            max-width: 785px;
+            position: relative;
+            background: #f9fbff;
+            border-radius: 11px;
+            align-items: center;
+            padding: 5px;
+            gap: 6px
+        }
+
+        .searchbox span {
+            color: #71849b;
+            padding: 0 11px;
+            font-size: 17px
+        }
+
+        .searchbox input {
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #183450;
+            flex: 1;
+            min-width: 60px;
+            padding: 12px 0
+        }
+
+        .primary {
+            border: 0;
+            background: #347ff4;
+            color: white;
+            font-weight: 700;
+            padding: 11px 20px;
+            border-radius: 8px
+        }
+
+        .primary:hover {
+            background: #256de0
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 13px;
+            margin: 20px 0 24px
+        }
+
+        .metric {
+            background: #101e33;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 15px 18px
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 22px;
+            margin-top: 4px
+        }
+
+        .metric small {
+            color: var(--muted)
+        }
+
+        .metric .ico {
+            float: right;
+            color: var(--cyan);
+            font-size: 18px
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 13px
+        }
+
+        .section-head h2 {
+            font-size: 18px;
+            margin: 0;
+            letter-spacing: -.2px
+        }
+
+        .section-head small {
+            color: var(--muted)
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(350px, .88fr);
+            gap: 18px
+        }
+
+        .panel {
+            background: #101d32;
+            border: 1px solid var(--line);
+            border-radius: 15px;
+            min-width: 0;
+            overflow: hidden
+        }
+
+        .panel-header {
+            padding: 16px 17px 13px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center
+        }
+
+        .panel-header h3 {
+            margin: 0;
+            font-size: 15px
+        }
+
+        .sub {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .filters {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            padding: 13px 15px 5px
+        }
+
+        .chip {
+            color: #a8bdd7;
+            border: 1px solid #304660;
+            background: #17283d;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 11px
+        }
+
+        .chip.selected {
+            color: #ddf5ff;
+            background: #1b4b6f;
+            border-color: #398bc5
+        }
+
+        .results {
+            padding: 7px 13px 14px;
+            max-height: 580px;
+            overflow: auto
+        }
+
+        .doc {
+            padding: 14px 10px;
+            border-bottom: 1px solid #26394f;
+            cursor: pointer;
+            border-radius: 8px
+        }
+
+        .doc:last-child {
+            border-bottom: 0
+        }
+
+        .doc:hover {
+            background: #192e49
+        }
+
+        .doc-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px
+        }
+
+        .doc-title {
+            font-weight: 750;
+            font-size: 13px
+        }
+
+        .doc p {
+            color: #9eb2cb;
+            font-size: 12px;
+            margin: 6px 0;
+            line-height: 1.5
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 11px;
+            color: #7e99ba;
+            font-size: 11px;
+            flex-wrap: wrap
+        }
+
+        .type {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: #1b4651;
+            color: #83e8d9
+        }
+
+        .chat {
+            display: flex;
+            flex-direction: column;
+            height: 680px
+        }
+
+        .chat-head {
+            padding: 15px 17px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 11px
+        }
+
+        .bot {
+            height: 34px;
+            width: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2673e5, #42acbb)
+        }
+
+        .chat-head h3 {
+            font-size: 14px;
+            margin: 0
+        }
+
+        .chat-head small {
+            color: #86d4b8
+        }
+
+        .messages {
+            padding: 18px;
+            display: flex;
+            gap: 13px;
+            flex-direction: column;
+            overflow: auto;
+            flex: 1
+        }
+
+        .msg {
+            max-width: 96%;
+            padding: 13px;
+            border-radius: 12px;
+            background: #1a2c46;
+            white-space: pre-wrap;
+            font-size: 12px;
+            line-height: 1.7
+        }
+
+        .msg.user {
+            background: #22548a;
+            align-self: flex-end
+        }
+
+        .msg.botmsg {
+            align-self: flex-start
+        }
+
+        .msg b {
+            color: #bcecff
+        }
+
+        .sources {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 9px
+        }
+
+        .source {
+            border: 1px solid #427ba5;
+            border-radius: 7px;
+            background: #193e5b;
+            color: #a7e3ff;
+            padding: 4px 8px;
+            font-size: 10px
+        }
+
+        .chat-bottom {
+            border-top: 1px solid var(--line);
+            padding: 13px
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px
+        }
+
+        .suggestions button {
+            font-size: 10px;
+            border-radius: 15px;
+            background: #1b3049;
+            border: 1px solid #314962;
+            color: #bad1e9;
+            padding: 6px 8px
+        }
+
+        .compose {
+            display: flex;
+            gap: 8px
+        }
+
+        .compose input {
+            background: #1b2e48;
+            border: 1px solid #36506a;
+            min-width: 0;
+            border-radius: 8px;
+            color: white;
+            padding: 11px;
+            flex: 1
+        }
+
+        .compose button {
+            border: 0;
+            background: #377ff0;
+            color: white;
+            border-radius: 8px;
+            padding: 0 14px;
+            font-size: 16px
+        }
+
+        .notice {
+            color: #859ebb;
+            font-size: 10px;
+            margin: 9px 0 0
+        }
+
+        .lower {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+
+        .category {
+            border: 1px solid var(--line);
+            background: #111e34;
+            border-radius: 13px;
+            text-align: left;
+            color: white;
+            padding: 15px
+        }
+
+        .category:hover {
+            border-color: #5798d9
+        }
+
+        .category strong {
+            display: block;
+            margin-top: 8px
+        }
+
+        .category small {
+            color: var(--muted)
+        }
+
+        .category .emoji {
+            font-size: 23px
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        .dialog {
+            position: fixed;
+            inset: 0;
+            background: #000b;
+            display: grid;
+            place-items: center;
+            padding: 18px;
+            z-index: 5
+        }
+
+        .dialog article {
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow: auto;
+            background: #12233b;
+            border: 1px solid #44708f;
+            border-radius: 15px;
+            padding: 24px;
+            box-shadow: var(--shadow)
+        }
+
+        .dialog h2 {
+            margin: 0 0 4px
+        }
+
+        .dialog p {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #c2d5eb
+        }
+
+        .dialog .close {
+            float: right;
+            color: white;
+            background: #263e58;
+            border: 0;
+            border-radius: 8px;
+            padding: 5px 10px
+        }
+
+        .manage {
+            padding: 16px
+        }
+
+        .manage p {
+            color: var(--muted)
+        }
+
+        .manage textarea {
+            width: 100%;
+            min-height: 140px;
+            background: #0b182a;
+            color: #e7f0fd;
+            border: 1px solid #314b6a;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px
+        }
+
+        .manage input[type=file] {
+            max-width: 100%
+        }
+
+        .manage code {
+            color: #8addf4
+        }
+
+        .status {
+            color: #85d5c3;
+            margin-top: 8px
+        }
+
+        .footnote {
+            padding: 15px 0;
+            color: #6e89a8;
+            font-size: 11px
+        }
+
+        @media(max-width:1100px) {
+            .workspace {
+                grid-template-columns: 1fr
+            }
+
+            .chat {
+                height: 550px
+            }
+        }
+
+        @media(max-width:740px) {
+            .app {
+                display: block
+            }
+
+            .sidebar {
+                padding: 12px;
+                gap: 8px;
+                border-right: 0;
+                border-bottom: 1px solid var(--line)
+            }
+
+            .logo {
+                font-size: 15px
+            }
+
+            .nav {
+                flex-direction: row;
+                overflow: auto
+            }
+
+            .nav button {
+                white-space: nowrap;
+                padding: 8px
+            }
+
+            .sidebar-foot,
+            .eyebrow {
+                display: none
+            }
+
+            .main {
+                padding: 15px
+            }
+
+            .top {
+                margin-bottom: 13px
+            }
+
+            .hero {
+                padding: 22px 16px
+            }
+
+            .hero h1 {
+                font-size: 24px
+            }
+
+            .metrics {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .workspace {
+                display: block
+            }
+
+            .workspace>.panel {
+                margin-bottom: 15px
+            }
+
+            .lower {
+                grid-template-columns: 1fr
+            }
+
+            .pill {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo"><span class="mark">✈</span><span>Skyline <span
+                        style="color:#65e1dc">Intelligence</span></span></div>
+            <div>
+                <div class="eyebrow">Workspace</div>
+                <nav class="nav"><button class="active" data-view="home"><span>▦</span> Knowledge Hub</button><button
+                        data-view="chat"><span>◈</span> AI Assistant</button><button data-view="docs"><span>▤</span> All
+                        Documents</button><button data-view="manage"><span>⚙</span> Manage Knowledge</button></nav>
+            </div>
+            <div class="sidebar-foot"><span class="dot"></span>Local demo • No server calls<br><br>Prototype for airline
+                enterprise intelligence. Do not publish confidential materials to public GitHub Pages.</div>
+        </aside>
+        <main class="main">
+            <div class="top"><span class="breadcrumbs">Enterprise Intelligence <span style="color:#5e7796"> / </span>
+                    <span id="crumb">Knowledge Hub</span></span><span class="right"><span class="pill">● &nbsp;
+                        Browser-only demo</span><span class="avatar">SK</span></span></div>
+            <div id="homeView">
+                <section class="hero">
+                    <div class="tag">Enterprise knowledge intelligence</div>
+                    <h1>Find the right knowledge.<br>Make smarter decisions.</h1>
+                    <p>Explore airline operations, technology, customer experience, and security guidance in one
+                        searchable hub. Ask the assistant for source-grounded answers.</p>
+                    <form class="searchbox" id="searchForm"><span>⌕</span><input id="searchInput"
+                            placeholder="Search policies, procedures, platforms, or topics..."
+                            aria-label="Search knowledge"><button class="primary">Search knowledge</button></form>
+                </section>
+                <div class="metrics">
+                    <div class="metric"><span class="ico">▤</span><small>Knowledge articles</small><strong
+                            id="mArticles">0</strong></div>
+                    <div class="metric"><span class="ico">◈</span><small>Knowledge domains</small><strong
+                            id="mDomains">0</strong></div>
+                    <div class="metric"><span class="ico">⌕</span><small>Search capability</small><strong>Local</strong>
+                    </div>
+                    <div class="metric"><span class="ico">✓</span><small>Assistant
+                            grounding</small><strong>Sources</strong></div>
+                </div>
+                <div class="workspace">
+                    <section class="panel" id="documentsPanel">
+                        <div class="panel-header">
+                            <div>
+                                <h3>Knowledge Library</h3>
+                                <div class="sub" id="resultCount">Find verified references and guides</div>
+                            </div><small class="sub">SORTED BY RELEVANCE</small>
+                        </div>
+                        <div class="filters" id="filterChips"></div>
+                        <div class="results" id="docResults"></div>
+                    </section>
+                    <section class="panel chat" id="assistantPanel">
+                        <div class="chat-head">
+                            <div class="bot">✦</div>
+                            <div>
+                                <h3>Knowledge Assistant</h3><small>● Source-grounded, on-device answers</small>
+                            </div>
+                        </div>
+                        <div class="messages" id="messages" aria-live="polite">
+                            <div class="msg botmsg">Hello! I'm the Skyline knowledge assistant. Ask about the example
+                                airline knowledge library and I'll find relevant passages, with references to the source
+                                articles.<br><br><b>What would you like to explore?</b></div>
+                        </div>
+                        <div class="chat-bottom">
+                            <div class="suggestions"><button data-question="How are flight disruptions handled?">Flight
+                                    disruptions</button><button
+                                    data-question="What are the AI governance requirements?">AI
+                                    governance</button><button
+                                    data-question="How does the intelligence layer work?">Intelligence layer</button>
+                            </div>
+                            <form id="chatForm" class="compose"><input id="chatInput" autocomplete="off"
+                                    placeholder="Ask a question about airline knowledge..."
+                                    aria-label="Chat message"><button aria-label="Send message">➤</button></form>
+                            <div class="notice">Demo answers are extractive, not generated by an LLM. Verify operational
+                                guidance before use.</div>
+                        </div>
+                    </section>
+                </div>
+                <div class="section-head" style="margin-top:24px">
+                    <h2>Explore key domains</h2><small>Select to filter knowledge</small>
+                </div>
+                <div class="lower" id="domainCards"></div>
+            </div>
+            <section id="manageView" class="panel hidden">
+                <div class="panel-header">
+                    <h3>Manage Knowledge • Local Workspace</h3>
+                </div>
+                <div class="manage">
+                    <h2>Bring your own sample documents</h2>
+                    <p>Import JSON articles into this browser session. Imported data is held only in memory and
+                        disappears on refresh. No uploads, tracking, external APIs, or permanent storage.</p>
+                    <p>JSON should be an array of records with <code>id</code>, <code>title</code>,
+                        <code>category</code>, <code>summary</code>, <code>content</code>, <code>updated</code>, and
+                        <code>owner</code>. Content is treated as plain text.</p><input type="file" id="importFile"
+                        accept=".json,application/json">
+                    <p>Or paste JSON here:</p><textarea id="jsonPaste"
+                        placeholder='[{"id":"DOC-100","title":"Sample Article","category":"Technology","summary":"Overview","content":"The full policy guidance...","updated":"2026-10-01","owner":"Platform Team"}]'></textarea>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px"><button class="primary" id="importBtn">Import
+                            documents</button><button class="chip" id="resetBtn">Reset to seeded demo</button><button
+                            class="chip" id="downloadBtn">Export current library</button></div>
+                    <div class="status" id="importStatus" role="status"></div>
+                    <p><b>Security note:</b> GitHub Pages is publicly accessible by default. For actual confidential
+                        airline knowledge, move search and generation to authenticated backend services with RBAC/ABAC
+                        enforcement and audited retrieval. This demo is not an access-controlled intranet.</p>
+                </div>
+            </section>
+            <footer class="footnote">Skyline Intelligence • Fictional airline knowledge demo • Not an authoritative
+                safety, regulatory, or operations system.</footer>
+        </main>
+    </div>
+    <div class="dialog hidden" id="documentDialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+        <article><button class="close" id="closeDialog">Close ✕</button>
+            <div class="sub" id="dialogMeta"></div>
+            <h2 id="dialogTitle"></h2>
+            <p id="dialogContent"></p>
+        </article>
+    </div>
+    <script src="data/knowledge.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
